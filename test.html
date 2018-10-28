@@ -1,0 +1,81 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Roboeye JS Template Filler - Test</title>
+    <style>
+        .container{
+            display: flex;
+            flex-direction: column;
+            margin-right: auto;
+            margin-left: auto;
+            background: rgba(169, 169, 169, 0.2);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Roboeye JS Template Filler</h1>
+    <section>
+        <h2>Template Example:</h2>
+        <div id="target_simple"></div>
+    </section>
+
+    <section>
+        <h2>Sub Template Example:</h2>
+        <div id="target_sub_template"></div>
+    </section>
+
+    <section>
+        <h2>Repeat Template Example:</h2>
+        <ul id="target_repeat"></ul>
+    </section>
+
+    <section>
+        <h2>Repeat Template Without DataObject Example:</h2>
+        <ul id="target_repeat_2"></ul>
+    </section>
+</div>
+
+<script src="RoboEyeTemplate.js"></script>
+<script>
+    // single rendering
+    const para = `<p>Hello <b>~guest~</b>, nice to meet you. I am <b>~host~</b></p>`;
+    RoboTemplate.apply('target_simple', para,
+        {
+            guest: 'Jack',
+            host: 'Ali',
+        });
+
+    // nested rendering
+    const ul = '<ul name="testing" id="testing">~items~</ul>';
+    const li = '<li id="~id~" data-meta="~office~">~content~</li>';
+
+
+    RoboTemplate.apply('target_sub_template', ul, {
+        items: {
+            sub_template: li,
+            sub_keyword: [
+                {id: 'id1', office: 'Office 1', content: '1 this is content'},
+                {id: 'id2', office: 'Office 2', content: '2 this is content'},
+                {id: 'id3', office: 'Office 3', content: '3 this is content'},
+                {id: 'id4', office: 'Office 4', content: '4 this is content'},
+                {id: 'id5', office: 'Office 5', content: '5 this is content'},
+                {id: 'id6', office: 'Office 6', content: '6 this is content'},
+            ],
+        }
+    });
+
+    // auto repeat
+    const liRepeat = '<li id="~__repeat__~">~content~ ~__repeat__~</li>';
+    RoboTemplate.repeatApply('target_repeat', 10, liRepeat, {content: 'Option #'});
+
+    // auto repeat without dataObject
+    const liRepeat2 = '<li id="~__repeat__~">Test ~__repeat__~</li>';
+    RoboTemplate.repeatApply('target_repeat_2', 10, liRepeat2);
+
+
+</script>
+</body>
+</html>
